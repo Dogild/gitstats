@@ -1,5 +1,5 @@
-from gitstats.account import Account
-from gitstats.commit import Commit
+from gitstats.models.account import Account
+from gitstats.models.commit import Commit
 
 account = Account("Dogild")
 repositories = list()

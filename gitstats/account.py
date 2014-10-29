@@ -13,17 +13,20 @@ class Account(object):
         self.end_date = end_date
         self.start_date = end_date - datetime.timedelta(days=365)
 
-    def get_forks():
+    def get_forks(self):
         pass
 
-    def sort_contributed_forks(forks):
+    def sort_contributed_forks(self, forks):
         pass
 
-    def get_repositories():
+    def get_repositories(self):
         pass
 
-    def get_commits_for_repositeries(repository):
+    def get_commits_for_repository(self, repository):
         pass
 
-    def get_commits_for_fork(fork):
+    def get_commits_for_fork(self, fork):
+        pass
+
+    def get_all_commits(self):
         pass

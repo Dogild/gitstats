@@ -3,7 +3,7 @@
 import datetime
 
 from gitstats.lib.github_connection import GithubConnection
-from gitstats.model.repository import Repository
+from gitstats.models.repository import Repository
 
 class Account(object):
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from gitstats.models.account import Account
 from gitstats.models.commit import Commit
 

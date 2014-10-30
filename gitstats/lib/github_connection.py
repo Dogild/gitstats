@@ -4,6 +4,7 @@ import json
 import requests
 
 from gitstats.lib.route import make_uri_user_repository
+from gitstats.lib.utils import make_headers
 from gitstats.models.repository import Repository
 
 class GithubConnection(object):
@@ -14,7 +15,7 @@ class GithubConnection(object):
     def get_user_repositories(self):
 
         try:
-            r = requests.get(make_uri_user_repository(self.username))
+            r = requests.get(make_uri_user_repository(self.username), headers=make_headers())
         except Exception as exc:
             print "Unexpected error:", exc
             raise Exception("requests issue")

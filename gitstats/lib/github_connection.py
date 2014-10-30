@@ -4,6 +4,7 @@ import json
 import requests
 
 from gitstats.lib.route import make_uri_user_repository
+from gitstats.models.repository import Repository
 
 class GithubConnection(object):
 
@@ -12,5 +13,23 @@ class GithubConnection(object):
 
     def get_user_repositories(self):
 
-        r = requests.get(make_uri_user_repository(self.username))
-        return r.json()
+        try:
+            r = requests.get(make_uri_user_repository(self.username))
+        except Exception as exc:
+            print "Unexpected error:", exc
+            raise Exception("requests issue")
+
+        dict_repositories = r.json()
+
+        if not isinstance(dict_repositories, list):
+            print "We should get a list when getting the repositories, but we got %s", dict_repositories
+            raise Exception("List issue")
+
+        repositories = list()
+
+        for repository in dict_repositories:
+            new_repository = Repository(repository["name"], repository["fork"], self.username, repository["commits_url"], repository["url"])
+            repositories.append(new_repository)
+
+        return repositories
+

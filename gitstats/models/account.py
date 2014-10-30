@@ -3,6 +3,7 @@
 import datetime
 
 from gitstats.lib.github_connection import GithubConnection
+from gitstats.model.repository import Repository
 
 class Account(object):
 
@@ -16,20 +17,6 @@ class Account(object):
         self.start_date = end_date - datetime.timedelta(days=365)
         self.github_connection = GithubConnection(username)
 
-    def get_forks(self):
-        pass
-
-    def sort_contributed_forks(self, forks):
-        pass
-
     def get_repositories(self):
-        return self.github_connection.get_user_repositories()
-
-    def get_commits_for_repository(self, repository):
-        pass
-
-    def get_commits_for_fork(self, fork):
-        pass
-
-    def get_all_commits(self):
-        pass
+        self.repositories = self.github_connection.get_user_repositories()
+        return self.repositories

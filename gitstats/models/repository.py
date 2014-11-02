@@ -8,6 +8,7 @@ class Repository(object):
         self.owner = owner
         self.commits_url = commits_url
         self.repos_url = repo_url
+        self.commits = list()
 
     def __repr__(self):
         return "\nRepository : %s" % self.name

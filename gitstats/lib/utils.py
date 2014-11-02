@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 
 from base64 import urlsafe_b64encode
 
@@ -13,3 +14,7 @@ def make_headers():
     headers["Accept"] = "application/json"
 
     return headers
+
+def transform_url(url):
+    m = re.search('([\w\:\/\.\-]*)', url)
+    return m.group(0)

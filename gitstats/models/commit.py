@@ -4,8 +4,14 @@ import datetime
 
 class Commit(object):
 
-    def __init__(self, date=None, ID=None, author=None, comment=None):
+    def __init__(self, date=None, sha=None, author=None, message=None):
         self.date = date
-        self.ID = ID
+        self.sha = sha
         self.author = author
-        self.comment = comment
+        self.message = message
+
+    def __repr__(self):
+        return "\nCommit : %s %s" % (self.author ,self.message)
+
+    def __str__(self):
+        return "\nCommit : %s %s" % (self.author ,self.message)

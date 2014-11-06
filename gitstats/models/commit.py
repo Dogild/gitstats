@@ -11,7 +11,7 @@ class Commit(object):
         self.message = message
 
     def __repr__(self):
-        return "\nCommit : %s %s" % (self.author ,self.message)
+        return "\nCommit : %s %s" % (self.author.encode('utf-8') ,self.message.encode('utf-8'))
 
     def __str__(self):
-        return "\nCommit : %s %s" % (self.author ,self.message)
+        return "\nCommit : %s %s" % (self.author.encode('utf-8') ,self.message.encode('utf-8'))

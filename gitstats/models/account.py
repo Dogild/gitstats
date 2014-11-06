@@ -31,7 +31,6 @@ class Account(object):
         repositories = list()
 
         for repository in dict_repositories:
-
             is_fork = repository["fork"]
             commits_url = repository["commits_url"]
             repos_url = repository["url"]

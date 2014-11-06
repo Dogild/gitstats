@@ -18,3 +18,11 @@ print "Retrieving commits for each repositories"
 commits = account.get_commits()
 print commits
 print "Number of commits %s" % len(commits)
+
+print "Retrieving issues for each repositories"
+issues = account.get_issues()
+print issues
+print "Number of issues %s" % len(issues)
+
+print "Total contributions"
+print account.contributions

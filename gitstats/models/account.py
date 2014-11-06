@@ -5,6 +5,7 @@ import datetime
 from gitstats.lib.github_connection import GithubConnection
 from gitstats.models.repository import Repository
 from gitstats.models.commit import Commit
+from gitstats.models.issue import Issue
 from gitstats.lib.routes import make_uri_user
 
 class Account(object):
@@ -34,13 +35,15 @@ class Account(object):
             is_fork = repository["fork"]
             commits_url = repository["commits_url"]
             repos_url = repository["url"]
+            issues_url = repository["issues_url"]
 
             if (is_fork):
                 dict_parent = self.github_connection.get(repos_url)
                 commits_url = dict_parent["parent"]["commits_url"]
                 repos_url = dict_parent["parent"]["url"]
+                issues_url = dict_parent["parent"]["issues_url"]
 
-            new_repository = Repository(repository["name"], is_fork, self.username, commits_url, repos_url)
+            new_repository = Repository(repository["name"], is_fork, self.username, commits_url, repos_url, issues_url)
 
             if new_repository not in repositories:
                 repositories.append(new_repository)
@@ -69,3 +72,24 @@ class Account(object):
         self.contributions += len(commits)
 
         return commits
+
+    def get_issues(self):
+
+        params = dict()
+        params["creator"] = self.username
+        params["state"] = "all"
+        params["since"] = self.start_date.isoformat()
+
+        issues = list()
+
+        for repository in self.repositories:
+            new_issues = self.github_connection.get(repository.issues_url, params)
+
+            for new_issue in new_issues:
+                date = datetime.datetime.strptime(new_issue["created_at"], "%Y-%m-%dT%H:%M:%SZ")
+                issue = Issue(date=date, number=new_issue["number"], author=new_issue["user"]["login"], title=new_issue["title"])
+                issues.append(issue)
+
+        self.contributions += len(issues)
+
+        return issues

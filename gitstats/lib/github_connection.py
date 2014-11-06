@@ -24,6 +24,8 @@ class GithubConnection(object):
 
         uri = uri + uri_params
 
+        print uri
+
         try:
             r = requests.get(uri, headers=make_headers())
         except Exception as exc:

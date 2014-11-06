@@ -30,8 +30,20 @@ class Account(object):
         repositories = list()
 
         for repository in dict_repositories:
-            new_repository = Repository(repository["name"], repository["fork"], self.username, repository["commits_url"], repository["url"])
-            repositories.append(new_repository)
+
+            is_fork = repository["fork"]
+            commits_url = repository["commits_url"]
+            repos_url = repository["url"]
+
+            if (is_fork):
+                dict_parent = self.github_connection.get(repos_url)
+                commits_url = dict_parent["parent"]["commits_url"]
+                repos_url = dict_parent["parent"]["url"]
+
+            new_repository = Repository(repository["name"], is_fork, self.username, commits_url, repos_url)
+
+            if new_repository not in repositories:
+                repositories.append(new_repository)
 
         self.repositories = repositories
 
@@ -50,7 +62,8 @@ class Account(object):
             new_commits = self.github_connection.get(repository.commits_url, params)
 
             for new_commit in new_commits:
-                commit = Commit(date=new_commit["commit"]["author"]["date"], sha=new_commit["sha"], author=new_commit["commit"]["author"]["name"], message=new_commit["commit"]["message"])
+                date = datetime.datetime.strptime(new_commit["commit"]["author"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+                commit = Commit(date=date, sha=new_commit["sha"], author=new_commit["commit"]["author"]["name"], message=new_commit["commit"]["message"])
                 commits.append(commit)
 
         self.contributions += len(commits)

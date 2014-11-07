@@ -6,11 +6,11 @@ from gitstats.lib.github_connection import GithubConnection
 from gitstats.models.repository import Repository
 from gitstats.models.commit import Commit
 from gitstats.models.issue import Issue
-from gitstats.lib.routes import make_uri_user
+from gitstats.lib.routes import make_uri_user, make_uri_search_issue, make_uri_orgs
 
 class Account(object):
 
-    def __init__(self, username, repositories=list(), forks=list(), contributions=0, end_date=datetime.date.today()):
+    def __init__(self, username, repositories=list(), forks=list(), contributions=0, end_date=datetime.datetime.today()):
         self.username = username
         self.repositories = repositories
         self.forks = forks
@@ -21,12 +21,16 @@ class Account(object):
 
         dict_user = self.github_connection.get(make_uri_user(username))
         self.repos_url = dict_user["repos_url"]
+        self.orgs = self.github_connection.get(make_uri_orgs(username))
 
     def get_repositories(self):
 
         params = dict()
         params["type"] = "all"
         dict_repositories = self.github_connection.get(self.repos_url, params)
+
+        for org in self.orgs:
+            dict_repositories.extend(self.github_connection.get(org["repos_url"]))
 
         repositories = list()
 
@@ -75,20 +79,19 @@ class Account(object):
     def get_issues(self):
 
         params = dict()
-        params["creator"] = self.username
-        params["state"] = "all"
-        params["since"] = self.start_date.isoformat()
+        params["q"] = "author:%s" % self.username
 
         issues = list()
 
-        for repository in self.repositories:
-            new_issues = self.github_connection.get(repository.issues_url, params)
+        dict_issues = self.github_connection.search_issues(uri=make_uri_search_issue(), params=params, min_date=self.start_date)
 
-            for new_issue in new_issues:
-                date = datetime.datetime.strptime(new_issue["created_at"], "%Y-%m-%dT%H:%M:%SZ")
-                issue = Issue(date=date, number=new_issue["number"], author=new_issue["user"]["login"], title=new_issue["title"])
+        for dict_issue in dict_issues:
+            date = datetime.datetime.strptime(dict_issue["created_at"], "%Y-%m-%dT%H:%M:%SZ")
+            issue = Issue(date=date, author=dict_issue["user"]["login"], number=dict_issue["number"], title=dict_issue["title"])
+
+            if date > self.start_date:
                 issues.append(issue)
 
-        self.contributions += len(issues)
+        self.contributions +=len(issues)
 
         return issues

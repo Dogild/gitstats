@@ -3,7 +3,7 @@
 from gitstats.models.account import Account
 from gitstats.models.commit import Commit
 
-account = Account("Dogild")
+account = Account("primalmotion")
 repositories = list()
 forks = list()
 contributed_forks = list()
@@ -24,5 +24,5 @@ issues = account.get_issues()
 print issues
 print "Number of issues %s" % len(issues)
 
-print "Total contributions"
+print "Total contributions for %s" % account.username
 print account.contributions

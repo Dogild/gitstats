@@ -4,10 +4,21 @@ Gitstats
 Introduction
 ------------
 
-This library can be used to retrieve public activities of the last year of a github account. The datas retrieved per account are the number of contributions and number of commits per days. Statistics only used public activity of the account.
+This library can be used to retrieve public activities of the last year of a github account. The datas retrieved per account are the number of contributions and number of commits/issues per days. Statistics only used public activity of the account.
+
+Installation
+------------
+
+Create a virtualenv and then
+
+`pip install -r requirements.txt`
+
+You need to define the environment variable `GITSTATS_TOKEN` to used the library. Go to the webpage github to generate a token.
 
 Getting start
 -------------
+
+Open the file example.py, change the account name to yours and then launch `python example.py` et voilà
 
 Licence
 -------

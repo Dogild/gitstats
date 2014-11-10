@@ -8,5 +8,11 @@ account = Account("Dogild")
 print "Let's take a look to the account %s" % account.username
 print "Retrieving contributions"
 contributions = account.get_contributions_of_last_year()
-print contributions
-print "Totale number of contributions %s" % len(contributions)
+
+print "Contributions per day"
+
+for contribution in contributions:
+    print "\n"
+    print contribution
+
+print "Total contribution %s" % account.total_contributions

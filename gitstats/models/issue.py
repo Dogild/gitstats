@@ -11,7 +11,7 @@ class Issue(object):
         self.title = title
 
     def __repr__(self):
-        return "\nIssue : %s %s" % (self.author.encode('utf-8') ,self.title.encode('utf-8'))
+        return "\nIssue %s : %s %s" % (self.date, self.author.encode('utf-8') ,self.title.encode('utf-8'))
 
     def __str__(self):
-        return "\nIssue : %s %s" % (self.author.encode('utf-8') ,self.title.encode('utf-8'))
+        return "\nIssue %s : %s %s" % (self.date, self.author.encode('utf-8') ,self.title.encode('utf-8'))

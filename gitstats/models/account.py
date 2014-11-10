@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import calendar
 
 from gitstats.lib.github_connection import GithubConnection
 from gitstats.models.repository import Repository
@@ -14,7 +15,7 @@ class Account(object):
         self.username = username
         self.repositories = list()
         self.forks = list()
-        self.contributions = 0
+        self.total_contributions = 0
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=365)
         self.github_connection = GithubConnection(username)
@@ -31,19 +32,34 @@ class Account(object):
         return self._get_contributions()
 
     def get_contributions_for_dates(self, start_date, end_date):
+
+        if start_date > end_date:
+            return
+
         self.end_date = end_date
         self.start_date = start_date
 
         return self._get_contributions()
 
     def _get_contributions(self):
-        self.contributions = 0
-        contributions_list = list()
+        self.total_contributions = 0
+        contributions_list = [list()] * (self.end_date - self.start_date).days
         commits = self._get_commits(self.start_date, self.end_date)
         issues = self._get_issues(self.start_date, self.end_date)
 
-        contributions_list.extend(commits)
-        contributions_list.extend(issues)
+        for commit in commits:
+            day_number = commit.date.timetuple().tm_yday
+            contributions = [commit]
+            contributions.extend(contributions_list[day_number])
+            contributions_list[day_number] = contributions
+            self.total_contributions += 1
+
+        for issue in issues:
+            day_number = issue.date.timetuple().tm_yday
+            contributions = [issue]
+            contributions.extend(contributions_list[day_number])
+            contributions_list[day_number] = contributions
+            self.total_contributions += 1
 
         return contributions_list
 

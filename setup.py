@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 
 from distutils.core import setup
+from os.path import join
 
 setup(name='gitstats',
       version='0.0.1',
-      description='Python library to retrieve commits statistics from github',
+      description='Python library to retrieve public contributions from github',
       author='Alexandre Wilhelm',
-      author_email='alexandre.wilhelmfr@gmail.com',
-      url='https://github.com/Dogild/gitstats'
+      author_email='contact.dogild@gmail.com',
+      url='https://github.com/Dogild/gitstats',
+      packages=['gitstats', 'gitstats.lib', 'gitstats.models'],
+      license='MIT',
+      install_requires=map(str.strip, open(join('requirements.txt')))
      )

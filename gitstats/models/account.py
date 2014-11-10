@@ -26,15 +26,12 @@ class Account(object):
         self.repositories = self._get_repositories()
 
     def get_contributions_of_last_year(self):
-        self.end_date = datetime.datetime.today()
-        self.start_date = self.end_date - datetime.timedelta(days=365)
-
-        return self._get_contributions()
+        return self.get_contributions_for_dates(datetime.datetime.today() - datetime.timedelta(days=365), datetime.datetime.today())
 
     def get_contributions_for_dates(self, start_date, end_date):
 
         if start_date > end_date:
-            return
+            return list()
 
         self.end_date = end_date
         self.start_date = start_date

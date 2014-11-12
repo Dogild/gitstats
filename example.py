@@ -5,7 +5,7 @@ from gitstats.models.commit import Commit
 
 account = Account("Dogild")
 
-print "Let's take a look to the account %s" % account.username
+print "Let's take a look to the account %s" % account.user.name
 print "Retrieving contributions"
 contributions = account.get_contributions_of_last_year()
 

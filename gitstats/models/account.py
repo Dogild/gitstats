@@ -4,26 +4,31 @@ import datetime
 import calendar
 
 from gitstats.lib.github_connection import GithubConnection
+from gitstats.lib.task_manager import TaskManager
 from gitstats.models.repository import Repository
 from gitstats.models.commit import Commit
 from gitstats.models.issue import Issue
+from gitstats.models.user import User
 from gitstats.lib.routes import make_uri_user, make_uri_search_issue, make_uri_orgs
 
 class Account(object):
 
     def __init__(self, username):
-        self.username = username
+        self.user = User(username)
         self.repositories = list()
         self.forks = list()
+        self.orgs = list()
         self.total_contributions = 0
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=365)
         self.github_connection = GithubConnection(username)
+        self.task_manager= TaskManager()
 
-        dict_user = self.github_connection.get(make_uri_user(username))
-        self.repos_url = dict_user["repos_url"]
-        self.orgs = self.github_connection.get(make_uri_orgs(username))
-        self.repositories = self._get_repositories()
+        self.task_manager._launch_request(make_uri_user(self.user.name), self._get_users)
+        self.task_manager._launch_request(make_uri_orgs(self.user.name), self._get_orgs, destinations=self.orgs)
+        self.task_manager._wait_until_exit()
+
+        self.repositories = self._fetch_repositories()
 
     def get_contributions_of_last_year(self):
         return self.get_contributions_for_dates(datetime.datetime.today() - datetime.timedelta(days=365), datetime.datetime.today())
@@ -38,9 +43,17 @@ class Account(object):
 
         return self._get_contributions()
 
+    def _get_users(self, uri, params=list(), destinations=dict()):
+        dict_user = self.github_connection.get(uri)
+        self.user.repos_url = dict_user["repos_url"]
+
+    def _get_orgs(self, uri, params=list(), destinations=list()):
+        destinations.extend(self.github_connection.get(uri))
+
     def _get_contributions(self):
         self.total_contributions = 0
         contributions_list = [list()] * (self.end_date - self.start_date).days
+
         commits = self._get_commits(self.start_date, self.end_date)
         issues = self._get_issues(self.start_date, self.end_date)
 
@@ -60,30 +73,44 @@ class Account(object):
 
         return contributions_list
 
-    def _get_repositories(self):
+    def _get_repositories(self, uri, params=list(), destinations=list()):
+        destinations.extend(self.github_connection.get(uri, params))
+
+    def _get_repository(self, uri, params=list(), destinations=dict()):
+        repository = (self.github_connection.get(uri, params))
+
+        destinations["commits_url"] = repository["parent"]["commits_url"]
+        destinations["url"] = repository["parent"]["url"]
+        destinations["issues_url"] = repository["parent"]["issues_url"]
+
+    def _fetch_repositories(self):
 
         params = dict()
         params["type"] = "all"
-        dict_repositories = self.github_connection.get(self.repos_url, params)
+
+        dict_repositories = list()
+
+        self.task_manager._launch_request(self.user.repos_url, self._get_repositories, params, dict_repositories)
 
         for org in self.orgs:
-            dict_repositories.extend(self.github_connection.get(org["repos_url"]))
+            self.task_manager._launch_request(org["repos_url"], self._get_repositories, destinations=dict_repositories)
+
+        self.task_manager._wait_until_exit()
+
+
+        for repository in dict_repositories:
+            is_fork = repository["fork"]
+
+            if (is_fork):
+                self.task_manager._launch_request(repository["url"], self._get_repository, destinations=repository)
+
+        self.task_manager._wait_until_exit()
+
 
         repositories = list()
 
         for repository in dict_repositories:
-            is_fork = repository["fork"]
-            commits_url = repository["commits_url"]
-            repos_url = repository["url"]
-            issues_url = repository["issues_url"]
-
-            if (is_fork):
-                dict_parent = self.github_connection.get(repos_url)
-                commits_url = dict_parent["parent"]["commits_url"]
-                repos_url = dict_parent["parent"]["url"]
-                issues_url = dict_parent["parent"]["issues_url"]
-
-            new_repository = Repository(repository["name"], is_fork, self.username, commits_url, repos_url, issues_url)
+            new_repository = Repository(repository["name"], is_fork, self.user.name, repository["commits_url"], repository["url"], repository["issues_url"])
 
             if new_repository not in repositories:
                 repositories.append(new_repository)
@@ -93,7 +120,7 @@ class Account(object):
     def _get_commits_for_repository(self, repository, start_date, end_date):
 
         params = dict()
-        params["author"] = self.username
+        params["author"] = self.user.name
         params["since"] = start_date.isoformat()
         params["until"] = end_date.isoformat()
 
@@ -108,19 +135,21 @@ class Account(object):
 
         return commits
 
-    def _get_commits(self, start_date, end_date):
+    def _get_commits(self, start_date, end_date, destinations=list()):
 
         commits = list()
 
         for repository in self.repositories:
             commits.extend(self._get_commits_for_repository(repository, start_date, end_date))
 
+        destinations.extend(commits)
+
         return commits
 
     def _get_issues(self, start_date, end_date):
 
         params = dict()
-        params["q"] = "author:%s" % self.username
+        params["q"] = "author:%s" % self.user.name
 
         issues = list()
 

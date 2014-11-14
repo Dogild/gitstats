@@ -3,7 +3,7 @@
 from gitstats.models.account import Account
 from gitstats.models.commit import Commit
 
-account = Account("Dogild")
+account = Account("aparajita")
 
 print "Let's take a look to the account %s" % account.user.name
 print "Retrieving contributions"

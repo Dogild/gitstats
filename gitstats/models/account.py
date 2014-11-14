@@ -59,7 +59,7 @@ class Account(object):
         self.total_contributions = 0
 
         number_days = (self.end_date - self.start_date).days
-        contributions_list = [list()] *number_days
+        contributions_list = [list()] * (number_days + 1)
 
         commits = list()
         issues = list()

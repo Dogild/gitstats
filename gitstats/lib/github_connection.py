@@ -31,6 +31,8 @@ class GithubConnection(object):
         uri = "%s?" % transform_url(uri)
         uri_params = ""
 
+        params["per_page"] = 100
+
         for param in params:
             if len(uri_params):
                 uri_params = "%s&%s=%s" % (uri_params, param, params[param])

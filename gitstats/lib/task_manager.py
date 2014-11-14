@@ -6,11 +6,17 @@ from time import sleep
 
 class TaskManager(object):
 
-    def _wait_until_exit(self):
-        while (threading.active_count() > 1):
-            sleep(0.01)
+    def __init__(self):
+        self.threads = list()
 
-    def _launch_request(self, uri, target, params=list(), destinations=list()):
-        thread = threading.Thread(target=target, args=(uri, params, destinations))
+    def _wait_until_exit(self):
+        # Wait until all the threads are done. .join() is blocking.
+        [t.join() for t in self.threads]
+
+        self.threads = list()
+
+    def _launch_request(self, method, params=list()):
+        thread = threading.Thread(target=method, args=params)
         thread.is_daemon = False
         thread.start()
+        self.threads.append(thread)

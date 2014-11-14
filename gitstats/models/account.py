@@ -22,11 +22,12 @@ class Account(object):
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=365)
         self.github_connection = GithubConnection(username)
-        self.task_manager= TaskManager()
 
-        self.task_manager._launch_request(make_uri_user(self.user.name), self._get_users)
-        self.task_manager._launch_request(make_uri_orgs(self.user.name), self._get_orgs, destinations=self.orgs)
-        self.task_manager._wait_until_exit()
+        task_manager= TaskManager()
+
+        task_manager._launch_request(self._get_users, params=[make_uri_user(self.user.name)])
+        task_manager._launch_request(self._get_orgs, params=[make_uri_orgs(self.user.name), list(), self.orgs])
+        task_manager._wait_until_exit()
 
         self.repositories = self._fetch_repositories()
 
@@ -43,19 +44,29 @@ class Account(object):
 
         return self._get_contributions()
 
-    def _get_users(self, uri, params=list(), destinations=dict()):
+    def _get_users(self, uri, params=list()):
         dict_user = self.github_connection.get(uri)
         self.user.repos_url = dict_user["repos_url"]
 
-    def _get_orgs(self, uri, params=list(), destinations=list()):
-        destinations.extend(self.github_connection.get(uri))
+    def _get_orgs(self, uri, params=list(), fetcher=list()):
+
+        orgs = self.github_connection.get(uri)
+        fetcher.extend(orgs)
+
+        return orgs
 
     def _get_contributions(self):
         self.total_contributions = 0
         contributions_list = [list()] * (self.end_date - self.start_date).days
 
-        commits = self._get_commits(self.start_date, self.end_date)
-        issues = self._get_issues(self.start_date, self.end_date)
+        commits = list()
+        issues = list()
+
+        task_manager= TaskManager()
+        task_manager._launch_request(self._get_commits, params=[self.start_date, self.end_date, commits])
+        task_manager._launch_request(self._get_issues, params=[self.start_date, self.end_date, issues])
+
+        task_manager._wait_until_exit()
 
         for commit in commits:
             day_number = commit.date.timetuple().tm_yday
@@ -73,15 +84,20 @@ class Account(object):
 
         return contributions_list
 
-    def _get_repositories(self, uri, params=list(), destinations=list()):
-        destinations.extend(self.github_connection.get(uri, params))
+    def _get_repositories(self, uri, params=list(), fetcher=list()):
+        repositories = self.github_connection.get(uri, params)
+        fetcher.extend(repositories)
+
+        return repositories
 
     def _get_repository(self, uri, params=list(), destinations=dict()):
-        repository = (self.github_connection.get(uri, params))
+        repository = self.github_connection.get(uri, params)
 
         destinations["commits_url"] = repository["parent"]["commits_url"]
         destinations["url"] = repository["parent"]["url"]
         destinations["issues_url"] = repository["parent"]["issues_url"]
+
+        return repository
 
     def _fetch_repositories(self):
 
@@ -89,23 +105,22 @@ class Account(object):
         params["type"] = "all"
 
         dict_repositories = list()
+        task_manager= TaskManager()
 
-        self.task_manager._launch_request(self.user.repos_url, self._get_repositories, params, dict_repositories)
+        task_manager._launch_request(self._get_repositories, [self.user.repos_url, params, dict_repositories])
 
         for org in self.orgs:
-            self.task_manager._launch_request(org["repos_url"], self._get_repositories, destinations=dict_repositories)
+            task_manager._launch_request(self._get_repositories , [org["repos_url"], list(), dict_repositories])
 
-        self.task_manager._wait_until_exit()
-
+        task_manager._wait_until_exit()
 
         for repository in dict_repositories:
             is_fork = repository["fork"]
 
             if (is_fork):
-                self.task_manager._launch_request(repository["url"], self._get_repository, destinations=repository)
+                task_manager._launch_request(self._get_repository, [repository["url"], list(), repository])
 
-        self.task_manager._wait_until_exit()
-
+        task_manager._wait_until_exit()
 
         repositories = list()
 
@@ -117,36 +132,41 @@ class Account(object):
 
         return repositories
 
-    def _get_commits_for_repository(self, repository, start_date, end_date):
+    def _get_commits_for_repository(self, uri, params=list(), fetcher=list()):
 
         params = dict()
         params["author"] = self.user.name
-        params["since"] = start_date.isoformat()
-        params["until"] = end_date.isoformat()
+        params["since"] = self.start_date.isoformat()
+        params["until"] = self.end_date.isoformat()
 
         commits = list()
 
-        new_commits = self.github_connection.get(repository.commits_url, params)
+        new_commits = self.github_connection.get(uri, params)
 
         for new_commit in new_commits:
             date = datetime.datetime.strptime(new_commit["commit"]["author"]["date"], "%Y-%m-%dT%H:%M:%SZ")
             commit = Commit(date=date, sha=new_commit["sha"], author=new_commit["commit"]["author"]["name"], message=new_commit["commit"]["message"])
             commits.append(commit)
 
+        fetcher.extend(commits)
+
         return commits
 
-    def _get_commits(self, start_date, end_date, destinations=list()):
+    def _get_commits(self, start_date, end_date, fetcher=list()):
 
+        task_manager= TaskManager()
         commits = list()
 
         for repository in self.repositories:
-            commits.extend(self._get_commits_for_repository(repository, start_date, end_date))
+            task_manager._launch_request(self._get_commits_for_repository, [repository.commits_url, list(), commits])
 
-        destinations.extend(commits)
+        task_manager._wait_until_exit()
+
+        fetcher.extend(commits)
 
         return commits
 
-    def _get_issues(self, start_date, end_date):
+    def _get_issues(self, start_date, end_date, fetcher=list()):
 
         params = dict()
         params["q"] = "author:%s" % self.user.name
@@ -161,5 +181,7 @@ class Account(object):
 
             if date > start_date:
                 issues.append(issue)
+
+        fetcher.extend(issues)
 
         return issues

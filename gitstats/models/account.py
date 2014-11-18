@@ -36,6 +36,13 @@ class Account(object):
 
         return self._get_contributions()
 
+    def sync_user_account(self):
+
+        task_manager = TaskManager()
+        task_manager.launch_request(self._get_users, params=[make_uri_user(self.user.name)])
+        task_manager.launch_request(self._get_orgs, params=[make_uri_orgs(self.user.name), dict(), self.orgs])
+        task_manager.wait_until_exit()
+
     def _get_users(self, uri, params=dict()):
         dict_user = GithubConnection(self.user.name).get(uri, params)
         self.user.repos_url = dict_user["repos_url"]
@@ -56,16 +63,13 @@ class Account(object):
         issues = list()
 
         task_manager_issues = TaskManager()
-        task_manager_issues.launch_request(self._get_issues, params=[self.start_date, self.end_date, issues])
+        task_manager_issues.launch_request(self.get_issues, params=[self.start_date, self.end_date, issues])
+
+        self.sync_user_account()
+        self.repositories = self.fetch_repositories()
 
         task_manager = TaskManager()
-        task_manager.launch_request(self._get_users, params=[make_uri_user(self.user.name)])
-        task_manager.launch_request(self._get_orgs, params=[make_uri_orgs(self.user.name), dict(), self.orgs])
-        task_manager.wait_until_exit()
-
-        self.repositories = self._fetch_repositories()
-
-        task_manager.launch_request(self._get_commits, params=[self.start_date, self.end_date, commits])
+        task_manager.launch_request(self.get_commits, params=[self.start_date, self.end_date, commits])
         task_manager.wait_until_exit()
         task_manager_issues.wait_until_exit()
 
@@ -100,7 +104,7 @@ class Account(object):
 
         return repository
 
-    def _fetch_repositories(self):
+    def fetch_repositories(self):
 
         params = dict()
         params["type"] = "all"
@@ -153,7 +157,7 @@ class Account(object):
 
         return commits
 
-    def _get_commits(self, start_date, end_date, fetcher=list()):
+    def get_commits(self, start_date, end_date, fetcher=list()):
 
         task_manager= TaskManager()
         commits = list()
@@ -167,7 +171,7 @@ class Account(object):
 
         return commits
 
-    def _get_issues(self, start_date, end_date, fetcher=list()):
+    def get_issues(self, start_date, end_date, fetcher=list()):
 
         params = dict()
         params["q"] = "author:%s" % self.user.name

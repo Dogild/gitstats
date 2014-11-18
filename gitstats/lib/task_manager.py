@@ -2,7 +2,6 @@
 
 import threading
 
-from time import sleep
 
 class TaskManager(object):
 

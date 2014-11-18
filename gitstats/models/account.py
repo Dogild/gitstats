@@ -23,14 +23,6 @@ class Account(object):
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=365)
 
-        task_manager= TaskManager()
-
-        task_manager._launch_request(self._get_users, params=[make_uri_user(self.user.name)])
-        task_manager._launch_request(self._get_orgs, params=[make_uri_orgs(self.user.name), dict(), self.orgs])
-        task_manager._wait_until_exit()
-
-        self.repositories = self._fetch_repositories()
-
     def get_contributions_of_last_year(self):
         return self.get_contributions_for_dates(datetime.datetime.today() - datetime.timedelta(days=365), datetime.datetime.today())
 
@@ -60,15 +52,22 @@ class Account(object):
 
         number_days = (self.end_date - self.start_date).days
         contributions_list = [list()] * (number_days + 1)
-
         commits = list()
         issues = list()
 
-        task_manager= TaskManager()
-        task_manager._launch_request(self._get_commits, params=[self.start_date, self.end_date, commits])
-        task_manager._launch_request(self._get_issues, params=[self.start_date, self.end_date, issues])
+        task_manager_issues = TaskManager()
+        task_manager_issues.launch_request(self._get_issues, params=[self.start_date, self.end_date, issues])
 
-        task_manager._wait_until_exit()
+        task_manager = TaskManager()
+        task_manager.launch_request(self._get_users, params=[make_uri_user(self.user.name)])
+        task_manager.launch_request(self._get_orgs, params=[make_uri_orgs(self.user.name), dict(), self.orgs])
+        task_manager.wait_until_exit()
+
+        self.repositories = self._fetch_repositories()
+
+        task_manager.launch_request(self._get_commits, params=[self.start_date, self.end_date, commits])
+        task_manager.wait_until_exit()
+        task_manager_issues.wait_until_exit()
 
         for commit in commits:
             day_number = (self.end_date + timedelta(days=1) - commit.date).days
@@ -107,22 +106,22 @@ class Account(object):
         params["type"] = "all"
 
         dict_repositories = list()
-        task_manager= TaskManager()
+        task_manager = TaskManager()
 
-        task_manager._launch_request(self._get_repositories, [self.user.repos_url, params, dict_repositories])
+        task_manager.launch_request(self._get_repositories, [self.user.repos_url, params, dict_repositories])
 
         for org in self.orgs:
-            task_manager._launch_request(self._get_repositories , [org["repos_url"], dict(), dict_repositories])
+            task_manager.launch_request(self._get_repositories , [org["repos_url"], dict(), dict_repositories])
 
-        task_manager._wait_until_exit()
+        task_manager.wait_until_exit()
 
         for repository in dict_repositories:
             is_fork = repository["fork"]
 
             if (is_fork):
-                task_manager._launch_request(self._get_repository, [repository["url"], dict(), repository])
+                task_manager.launch_request(self._get_repository, [repository["url"], dict(), repository])
 
-        task_manager._wait_until_exit()
+        task_manager.wait_until_exit()
 
         repositories = list()
 
@@ -160,9 +159,9 @@ class Account(object):
         commits = list()
 
         for repository in self.repositories:
-            task_manager._launch_request(self._get_commits_for_repository, [repository.commits_url, list(), commits])
+            task_manager.launch_request(self._get_commits_for_repository, [repository.commits_url, list(), commits])
 
-        task_manager._wait_until_exit()
+        task_manager.wait_until_exit()
 
         fetcher.extend(commits)
 

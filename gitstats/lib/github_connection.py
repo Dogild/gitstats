@@ -14,8 +14,6 @@ class GithubConnection(object):
 
     def _invoke_request(self, uri):
 
-        print uri
-
         try:
             r = requests.get(uri, headers=make_headers())
         except Exception as exc:

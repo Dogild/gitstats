@@ -15,7 +15,7 @@ class TaskManager(object):
 
         self.threads = list()
 
-    def _launch_request(self, method, params=list()):
+    def _launch_request(self, method, params=()):
         thread = threading.Thread(target=method, args=params)
         thread.is_daemon = False
         thread.start()

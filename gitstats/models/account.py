@@ -19,6 +19,7 @@ class Account(object):
         self.repositories = list()
         self.forks = list()
         self.orgs = list()
+        self.contributions = list()
         self.total_contributions = 0
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=365)
@@ -34,7 +35,9 @@ class Account(object):
         self.end_date = end_date
         self.start_date = start_date
 
-        return self._get_contributions()
+        self.contributions = self._get_contributions()
+
+        return self.contributions
 
     def sync_user_account(self):
 

@@ -22,10 +22,10 @@ class Account(object):
         self.contributions = list()
         self.total_contributions = 0
         self.end_date = datetime.datetime.today()
-        self.start_date = self.end_date - datetime.timedelta(days=365)
+        self.start_date = self.end_date - datetime.timedelta(days=364)
 
     def get_contributions_of_last_year(self):
-        return self.get_contributions_for_dates(datetime.datetime.today() - datetime.timedelta(days=365), datetime.datetime.today())
+        return self.get_contributions_for_dates(datetime.datetime.today() - datetime.timedelta(days=364), datetime.datetime.today())
 
     def get_contributions_for_dates(self, start_date, end_date):
 

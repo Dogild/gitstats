@@ -95,9 +95,6 @@ class Account(object):
         for commit in commits:
             day_number = (self.end_date - commit.date).days
             contributions = [commit]
-
-            print day_number
-
             contributions.extend(contributions_list[day_number])
             contributions_list[day_number] = contributions
             self.total_contributions += 1

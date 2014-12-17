@@ -2,7 +2,7 @@
 
 import datetime
 import calendar
-from datetime import timedelta
+from datetime import timedelta, time
 
 from gitstats.lib.github_connection import GithubConnection
 from gitstats.lib.task_manager import TaskManager
@@ -25,15 +25,30 @@ class Account(object):
         self.start_date = self.end_date - datetime.timedelta(days=364)
 
     def get_contributions_of_last_year(self):
-        return self.get_contributions_for_dates(datetime.datetime.today() - datetime.timedelta(days=364), datetime.datetime.today())
+        return self.get_contributions_of_last_year_from_date(datetime.datetime.today())
+
+    def get_contributions_of_last_three_months(self):
+        return self.get_contributions_of_last_three_months_from_date(datetime.datetime.today())
+
+    def get_contributions_of_last_six_months(self):
+        return self.get_contributions_of_last_six_months_from_date(datetime.datetime.today())
+
+    def get_contributions_of_last_year_from_date(self, date):
+        return self.get_contributions_for_dates(date - datetime.timedelta(days=364), date)
+
+    def get_contributions_of_last_three_months_from_date(self, date):
+        return self.get_contributions_for_dates(date - datetime.timedelta(days=90), date)
+
+    def get_contributions_of_last_six_months_from_date(self, date):
+        return self.get_contributions_for_dates(date - datetime.timedelta(days=182), date)
 
     def get_contributions_for_dates(self, start_date, end_date):
 
         if start_date > end_date:
             return list()
 
-        self.end_date = end_date
-        self.start_date = start_date
+        self.end_date = datetime.datetime.combine(end_date, time.max)
+        self.start_date = datetime.datetime.combine(start_date, time.min)
 
         self.contributions = self._get_contributions()
 

@@ -50,6 +50,9 @@ class Account(object):
         self.end_date = datetime.datetime.combine(end_date, time.max)
         self.start_date = datetime.datetime.combine(start_date, time.min)
 
+        #self.end_date = end_date
+        #self.start_date = start_date
+
         self.contributions = self._get_contributions()
 
         return self.contributions
@@ -76,6 +79,7 @@ class Account(object):
         self.total_contributions = 0
 
         number_days = (self.end_date - self.start_date).days
+
         contributions_list = [list()] * (number_days + 1)
         commits = list()
         issues = list()

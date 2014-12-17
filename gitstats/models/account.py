@@ -48,10 +48,7 @@ class Account(object):
             return list()
 
         self.end_date = datetime.datetime.combine(end_date, time.max)
-        self.start_date = datetime.datetime.combine(start_date, time.min)
-
-        #self.end_date = end_date
-        #self.start_date = start_date
+        self.start_date = datetime.datetime.combine(start_date - timedelta(days=1), time.min)
 
         self.contributions = self._get_contributions()
 
@@ -96,14 +93,17 @@ class Account(object):
         task_manager_issues.wait_until_exit()
 
         for commit in commits:
-            day_number = (self.end_date + timedelta(days=1) - commit.date).days
+            day_number = (self.end_date - commit.date).days
             contributions = [commit]
+
+            print day_number
+
             contributions.extend(contributions_list[day_number])
             contributions_list[day_number] = contributions
             self.total_contributions += 1
 
         for issue in issues:
-            day_number = (self.end_date + timedelta(days=1) - issue.date).days
+            day_number = (self.end_date - issue.date).days
             contributions = [issue]
             contributions.extend(contributions_list[day_number])
             contributions_list[day_number] = contributions

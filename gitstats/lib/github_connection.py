@@ -13,6 +13,9 @@ class GithubConnection(object):
         self.username = username
 
     def _invoke_request(self, uri):
+        """ Launch a request with requests
+            This method a Exception when the HTTP error is over or equal to 300
+        """
 
         try:
             r = requests.get(uri, headers=make_headers())
@@ -25,6 +28,7 @@ class GithubConnection(object):
         return r
 
     def _add_params(self, uri, params):
+        """ Add the given params to the given URI """
 
         uri = "%s?" % transform_url(uri)
         uri_params = ""
@@ -42,6 +46,10 @@ class GithubConnection(object):
         return uri
 
     def get(self, uri, params=dict(), transform_uri=True):
+        """ Make a get call on the given URI
+            This method will continue to make new requests with the URI of the header next. It automatically fetch informations of the next pages
+            The param transform_uri allows you to remove or not the extra informations given by github for their given URI.
+        """
 
         if (transform_uri):
             uri = self._add_params(uri, params)
@@ -64,6 +72,11 @@ class GithubConnection(object):
         return result_json
 
     def search_issues(self, uri, params=dict(), transform_uri=True, min_date=None):
+        """ Make a get call on the given URI
+            This method will continue to make new requests with the URI of the header next. It automatically fetch informations of the github pagination
+            The param transform_uri allows you to remove or not the extra informations given by github for their given URI.
+            The param min_date is used to know when we need to stop to fetch informations of the next pages
+        """
 
         if (transform_uri):
             uri = self._add_params(uri, params)

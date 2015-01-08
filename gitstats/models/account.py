@@ -25,24 +25,37 @@ class Account(object):
         self.start_date = self.end_date - datetime.timedelta(days=364)
 
     def get_contributions_of_last_year(self):
+        """ Return the contributions of the last year, return an array of 365 arrays """
+
         return self.get_contributions_of_last_year_from_date(datetime.datetime.today())
 
     def get_contributions_of_last_three_months(self):
+        """ Return the contributions of the last three months, return an array of 91 arrays """
+
         return self.get_contributions_of_last_three_months_from_date(datetime.datetime.today())
 
     def get_contributions_of_last_six_months(self):
+        """ Return the contributions of the last six months, return an array of 183 arrays """
+
         return self.get_contributions_of_last_six_months_from_date(datetime.datetime.today())
 
     def get_contributions_of_last_year_from_date(self, date):
+        """ Return the contributions of the last year from the given date, return an array of 183 arrays """
+
         return self.get_contributions_for_dates(date - datetime.timedelta(days=364), date)
 
     def get_contributions_of_last_three_months_from_date(self, date):
+        """ Return the contributions of the last three months from the given date, return an array of 91 arrays """
+
         return self.get_contributions_for_dates(date - datetime.timedelta(days=90), date)
 
     def get_contributions_of_last_six_months_from_date(self, date):
+        """ Return the contributions of the last three months from the given date, return an array of 183 arrays """
+
         return self.get_contributions_for_dates(date - datetime.timedelta(days=182), date)
 
     def get_contributions_for_dates(self, start_date, end_date):
+        """ Return the contributions for the given start_date and end_date, return an array """
 
         if start_date > end_date:
             return list()
@@ -55,6 +68,7 @@ class Account(object):
         return self.contributions
 
     def sync_user_account(self):
+        """ Get the informations for an account, this method will fetch the repos associated to the account (fork and organization repos). """
 
         task_manager = TaskManager()
         task_manager.launch_request(self._get_users, params=[make_uri_user(self.user.name)])
@@ -62,10 +76,13 @@ class Account(object):
         task_manager.wait_until_exit()
 
     def _get_users(self, uri, params=dict()):
+        """ Get the repos of the users """
+
         dict_user = GithubConnection(self.user.name).get(uri, params)
         self.user.repos_url = dict_user["repos_url"]
 
     def _get_orgs(self, uri, params=dict(), fetcher=list()):
+        """ Get the organizations repos of the users """
 
         orgs = GithubConnection(self.user.name).get(uri, params)
         fetcher.extend(orgs)
@@ -73,6 +90,10 @@ class Account(object):
         return orgs
 
     def _get_contributions(self):
+        """ Get the contributions of the user
+            This method will firstly fetch the user's informations, then the repositories of the user, then the commits and issues
+        """
+
         self.total_contributions = 0
 
         number_days = (self.end_date - self.start_date).days
@@ -88,7 +109,7 @@ class Account(object):
         self.repositories = self.fetch_repositories()
 
         task_manager = TaskManager()
-        task_manager.launch_request(self.get_commits, params=[self.start_date, self.end_date, commits])
+        task_manager.launch_request(self.get_commits, params=[commits])
         task_manager.wait_until_exit()
         task_manager_issues.wait_until_exit()
 
@@ -109,12 +130,16 @@ class Account(object):
         return contributions_list[::-1]
 
     def _get_repositories(self, uri, params=dict(), fetcher=list()):
+        """ Fetch repositories with the given URI """
+
         repositories = GithubConnection(self.user.name).get(uri, params)
         fetcher.extend(repositories)
 
         return repositories
 
     def _get_repository(self, uri, params=dict(), destinations=dict()):
+        """ Fetch a specific repository with the given URI, this is used when havinf a fork repository """
+
         repository = GithubConnection(self.user.name).get(uri, params)
 
         destinations["commits_url"] = repository["parent"]["commits_url"]
@@ -124,6 +149,7 @@ class Account(object):
         return repository
 
     def fetch_repositories(self):
+        """ Fetch the repositories of the account, this is going to fetch the root repo (when there are forks) and organization repos"""
 
         params = dict()
         params["type"] = "all"
@@ -157,6 +183,7 @@ class Account(object):
         return repositories
 
     def _get_commits_for_repository(self, uri, params=dict(), fetcher=list()):
+        """ Get the commits for the given repo URI"""
 
         params = dict()
         params["author"] = self.user.name
@@ -176,7 +203,8 @@ class Account(object):
 
         return commits
 
-    def get_commits(self, start_date, end_date, fetcher=list()):
+    def get_commits(self, fetcher=list()):
+        """ Get the commits made by the user for his associated repo"""
 
         task_manager= TaskManager()
         commits = list()
@@ -191,6 +219,7 @@ class Account(object):
         return commits
 
     def get_issues(self, start_date, end_date, fetcher=list()):
+        """ Get the issues opened by the user for the given dates"""
 
         params = dict()
         params["q"] = "author:%s" % self.user.name

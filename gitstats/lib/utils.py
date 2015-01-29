@@ -26,4 +26,9 @@ def transform_url(url):
     """
 
     m = re.search('([\w\:\/\.\-]*)', url)
-    return m.group(0)
+    uri = m.group(0)
+
+    if uri[-1:] == "/":
+        uri = uri[:-1]
+
+    return uri

@@ -19,7 +19,7 @@ class GithubConnectionTests(TestCase):
         github_connection = GithubConnection("Dogild")
         uri = github_connection._add_params(self.uri, dict())
 
-        assert uri == "https://api.github.com/users?per_page=100"
+        self.assertEqual(uri, "https://api.github.com/users?per_page=100")
 
     def test_method_add_params_with_param(self):
         """Test the method _add_params with param, the method adds by default the param per_page=100"""
@@ -29,7 +29,7 @@ class GithubConnectionTests(TestCase):
         params["test"] = "32"
         uri = github_connection._add_params(self.uri, params)
 
-        assert uri == "https://api.github.com/users?test=32&per_page=100"
+        self.assertEqual(uri, "https://api.github.com/users?test=32&per_page=100")
 
     def test_method_add_params_with_params(self):
         """Test the method _add_params with params, the method adds by default the param per_page=100"""
@@ -40,4 +40,4 @@ class GithubConnectionTests(TestCase):
         params["nosetest"] = "coucou"
         uri = github_connection._add_params(self.uri, params)
 
-        assert uri == "https://api.github.com/users?test=32&per_page=100&nosetest=coucou"
+        self.assertEqual(uri, "https://api.github.com/users?test=32&per_page=100&nosetest=coucou")

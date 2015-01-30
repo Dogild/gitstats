@@ -17,16 +17,16 @@ class RoutesTests(TestCase):
         """Test the route user, we should have https://api.github.com/users/Dogild"""
 
         url = make_uri_user("Dogild")
-        assert url == "https://api.github.com/users/Dogild"
+        self.assertEqual(url, "https://api.github.com/users/Dogild")
 
     def test_route_search_issue(self):
         """Test the route user, we should have https://api.github.com/search/issues"""
 
         url = make_uri_search_issue()
-        assert url == "https://api.github.com/search/issues"
+        self.assertEqual(url, "https://api.github.com/search/issues")
 
     def test_route_organization(self):
         """Test the route user, we should have https://api.github.com/users/Dogild/orgs"""
 
         url = make_uri_orgs("Dogild")
-        assert url == "https://api.github.com/users/Dogild/orgs"
+        self.assertEqual(url, "https://api.github.com/users/Dogild/orgs")

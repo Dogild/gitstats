@@ -26,52 +26,52 @@ class ModelTests(TestCase):
 
         account = Account("Dogild")
 
-        assert account.user.name == "Dogild"
-        assert account.repositories == list()
-        assert account.forks == list()
-        assert account.orgs == list()
-        assert account.contributions == list()
-        assert account.total_contributions == 0
-        assert account.end_date.strftime("%c") == self.today.strftime("%c")
-        assert account.start_date.strftime("%c") == (self.today - datetime.timedelta(days=364)).strftime("%c")
+        self.assertEqual(account.user.name, "Dogild")
+        self.assertEqual(account.repositories, list())
+        self.assertEqual(account.forks, list())
+        self.assertEqual(account.orgs, list())
+        self.assertEqual(account.contributions, list())
+        self.assertEqual(account.total_contributions, 0)
+        self.assertEqual(account.end_date.strftime("%c"), self.today.strftime("%c"))
+        self.assertEqual(account.start_date.strftime("%c"), (self.today - datetime.timedelta(days=364)).strftime("%c"))
 
     def test_creation_commit(self):
         """Test the creation of a commit"""
 
         commit = Commit(date=self.today, sha="1234", author="Dogild", message="Fixed: unit test")
 
-        assert commit.date.strftime("%c") == self.today.strftime("%c")
-        assert commit.sha == "1234"
-        assert commit.author == "Dogild"
-        assert commit.message == "Fixed: unit test"
+        self.assertEqual(commit.date.strftime("%c"), self.today.strftime("%c"))
+        self.assertEqual(commit.sha, "1234")
+        self.assertEqual(commit.author, "Dogild")
+        self.assertEqual(commit.message, "Fixed: unit test")
 
     def test_creation_repository(self):
         """Test the creation of a repository"""
 
         repository = Repository(name="gitstats", fork="dogild/gitstats", owner="Dogild", commits_url="http://github.com/Dogild/commits",  repos_url="http://github.com/Dogild/commits",  issues_url="http://github.com/Dogild/commits")
 
-        assert repository.name == "gitstats"
-        assert repository.fork == "dogild/gitstats"
-        assert repository.owner == "Dogild"
-        assert repository.commits_url == "http://github.com/Dogild/commits"
-        assert repository.repos_url == "http://github.com/Dogild/commits"
-        assert repository.issues_url == "http://github.com/Dogild/commits"
-        assert repository.commits == list()
+        self.assertEqual(repository.name, "gitstats")
+        self.assertEqual(repository.fork, "dogild/gitstats")
+        self.assertEqual(repository.owner, "Dogild")
+        self.assertEqual(repository.commits_url, "http://github.com/Dogild/commits")
+        self.assertEqual(repository.repos_url, "http://github.com/Dogild/commits")
+        self.assertEqual(repository.issues_url, "http://github.com/Dogild/commits")
+        self.assertEqual(repository.commits, list())
 
     def test_creation_issue(self):
         """Test the creation of an issue"""
 
         issue = Issue(date=self.today, number="1234", author="Dogild", title="Issue: unit test")
 
-        assert issue.date == self.today
-        assert issue.number == "1234"
-        assert issue.author == "Dogild"
-        assert issue.title == "Issue: unit test"
+        self.assertEqual(issue.date, self.today)
+        self.assertEqual(issue.number, "1234")
+        self.assertEqual(issue.author, "Dogild")
+        self.assertEqual(issue.title, "Issue: unit test")
 
     def test_creation_user(self):
         """Test the creation of an user"""
 
         user = User(name="Dogild", repos_url="http://github.com/Dogild")
 
-        assert user.name == "Dogild"
-        assert user.repos_url == "http://github.com/Dogild"
+        self.assertEqual(user.name, "Dogild")
+        self.assertEqual(user.repos_url, "http://github.com/Dogild")

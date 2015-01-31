@@ -20,6 +20,11 @@ Getting start
 
 Open the file example.py, change the account name to yours and then launch `python example.py` et voilà
 
+Tests
+-----
+
+Launch the command `nosetest`
+
 Licence
 -------
 This library is free software; you can redistribute it and/or modify it under

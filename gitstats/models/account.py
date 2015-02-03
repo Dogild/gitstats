@@ -79,7 +79,11 @@ class Account(object):
         """ Get the repos of the users """
 
         dict_user = GithubConnection(self.user.name).get(uri, params)
-        self.user.repos_url = dict_user["repos_url"]
+
+        if "repos_url" in dict_user:
+            self.user.repos_url = dict_user["repos_url"]
+        else :
+            raise AccountNameException("User %s not found" % self.user.name)
 
     def _get_orgs(self, uri, params=dict(), fetcher=list()):
         """ Get the organizations repos of the users """
@@ -138,7 +142,7 @@ class Account(object):
         return repositories
 
     def _get_repository(self, uri, params=dict(), destinations=dict()):
-        """ Fetch a specific repository with the given URI, this is used when havinf a fork repository """
+        """ Fetch a specific repository with the given URI, this is used when having a fork repository """
 
         repository = GithubConnection(self.user.name).get(uri, params)
 
@@ -238,3 +242,12 @@ class Account(object):
         fetcher.extend(issues)
 
         return issues
+
+
+class AccountNameException(Exception):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)

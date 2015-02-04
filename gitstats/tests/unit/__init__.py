@@ -335,3 +335,163 @@ bodies["https://api.github.com/repos/cappuccino/ojtest/commits?per_page=100&sinc
                                                                                                                                                                                                     "html_url":"https://github.com/cappuccino/OJTest/commit/c289fa7bee69a8cef7adeafbeede25d90cf2e51e"}]}]'
 
 bodies["https://api.github.com/repos/cappuccino/ojunit/commits?per_page=100&since=2014-02-04T00:00:00.000001&until=2015-02-03T00:00:00.000001&author=little-dude"] = '[]'
+
+bodies["https://api.github.com/search/issues?q=author:little-dude&per_page=100"] = '{"total_count": 3,\
+                                                                                     "incomplete_results": false,\
+                                                                                     "items": [\
+                                                                                       {\
+                                                                                         "url": "https://api.github.com/repos/nose-devs/nose2/issues/231",\
+                                                                                         "labels_url": "https://api.github.com/repos/nose-devs/nose2/issues/231/labels{/name}",\
+                                                                                         "comments_url": "https://api.github.com/repos/nose-devs/nose2/issues/231/comments",\
+                                                                                         "events_url": "https://api.github.com/repos/nose-devs/nose2/issues/231/events",\
+                                                                                         "html_url": "https://github.com/nose-devs/nose2/issues/231",\
+                                                                                         "id": 53271267,\
+                                                                                         "number": 231,\
+                                                                                         "title": "logs printed twice",\
+                                                                                         "user": {\
+                                                                                           "login": "little-dude",\
+                                                                                           "id": 6646324,\
+                                                                                           "avatar_url": "https://avatars.githubusercontent.com/u/6646324?v=3",\
+                                                                                           "gravatar_id": "",\
+                                                                                           "url": "https://api.github.com/users/little-dude",\
+                                                                                           "html_url": "https://github.com/little-dude",\
+                                                                                           "followers_url": "https://api.github.com/users/little-dude/followers",\
+                                                                                           "following_url": "https://api.github.com/users/little-dude/following{/other_user}",\
+                                                                                           "gists_url": "https://api.github.com/users/little-dude/gists{/gist_id}",\
+                                                                                           "starred_url": "https://api.github.com/users/little-dude/starred{/owner}{/repo}",\
+                                                                                           "subscriptions_url": "https://api.github.com/users/little-dude/subscriptions",\
+                                                                                           "organizations_url": "https://api.github.com/users/little-dude/orgs",\
+                                                                                           "repos_url": "https://api.github.com/users/little-dude/repos",\
+                                                                                           "events_url": "https://api.github.com/users/little-dude/events{/privacy}",\
+                                                                                           "received_events_url": "https://api.github.com/users/little-dude/received_events",\
+                                                                                           "type": "User",\
+                                                                                           "site_admin": false\
+                                                                                         },\
+                                                                                         "labels": [\
+                                                                                           {\
+                                                                                             "url": "https://api.github.com/repos/nose-devs/nose2/labels/0.6.x",\
+                                                                                             "name": "0.6.x",\
+                                                                                             "color": "207de5"\
+                                                                                           },\
+                                                                                           {\
+                                                                                             "url": "https://api.github.com/repos/nose-devs/nose2/labels/backlog",\
+                                                                                             "name": "backlog",\
+                                                                                             "color": "C76114"\
+                                                                                           },\
+                                                                                           {\
+                                                                                             "url": "https://api.github.com/repos/nose-devs/nose2/labels/bug",\
+                                                                                             "name": "bug",\
+                                                                                             "color": "e10c02"\
+                                                                                           }\
+                                                                                         ],\
+                                                                                         "state": "open",\
+                                                                                         "locked": false,\
+                                                                                         "assignee": null,\
+                                                                                         "milestone": null,\
+                                                                                         "comments": 9,\
+                                                                                         "created_at": "2015-01-02T19:14:05Z",\
+                                                                                         "updated_at": "2015-01-15T07:43:13Z",\
+                                                                                         "closed_at": null,\
+                                                                                         "body": "Comment Issue",\
+                                                                                         "score": 1.0\
+                                                                                       }]}'
+
+bodies["https://api.github.com/search/issues?q=author:little-dude&per_page=100&page=2"] = '{"total_count": 3,\
+                                                                                     "incomplete_results": false,\
+                                                                                     "items": [\
+                                                                                       {\
+                                                                                         "url": "https://api.github.com/repos/nose-devs/nose/issues/865",\
+                                                                                         "labels_url": "https://api.github.com/repos/nose-devs/nose/issues/865/labels{/name}",\
+                                                                                         "comments_url": "https://api.github.com/repos/nose-devs/nose/issues/865/comments",\
+                                                                                         "events_url": "https://api.github.com/repos/nose-devs/nose/issues/865/events",\
+                                                                                         "html_url": "https://github.com/nose-devs/nose/pull/865",\
+                                                                                         "id": 52769662,\
+                                                                                         "number": 865,\
+                                                                                         "title": "Refactor loadTestsFromName in smaller bites.",\
+                                                                                         "user": {\
+                                                                                           "login": "little-dude",\
+                                                                                           "id": 6646324,\
+                                                                                           "avatar_url": "https://avatars.githubusercontent.com/u/6646324?v=3",\
+                                                                                           "gravatar_id": "",\
+                                                                                           "url": "https://api.github.com/users/little-dude",\
+                                                                                           "html_url": "https://github.com/little-dude",\
+                                                                                           "followers_url": "https://api.github.com/users/little-dude/followers",\
+                                                                                           "following_url": "https://api.github.com/users/little-dude/following{/other_user}",\
+                                                                                           "gists_url": "https://api.github.com/users/little-dude/gists{/gist_id}",\
+                                                                                           "starred_url": "https://api.github.com/users/little-dude/starred{/owner}{/repo}",\
+                                                                                           "subscriptions_url": "https://api.github.com/users/little-dude/subscriptions",\
+                                                                                           "organizations_url": "https://api.github.com/users/little-dude/orgs",\
+                                                                                           "repos_url": "https://api.github.com/users/little-dude/repos",\
+                                                                                           "events_url": "https://api.github.com/users/little-dude/events{/privacy}",\
+                                                                                           "received_events_url": "https://api.github.com/users/little-dude/received_events",\
+                                                                                           "type": "User",\
+                                                                                           "site_admin": false\
+                                                                                         },\
+                                                                                         "labels": [],\
+                                                                                         "state": "open",\
+                                                                                         "locked": false,\
+                                                                                         "assignee": null,\
+                                                                                         "milestone": null,\
+                                                                                         "comments": 3,\
+                                                                                         "created_at": "2014-12-23T19:52:01Z",\
+                                                                                         "updated_at": "2014-12-28T22:39:54Z",\
+                                                                                         "closed_at": null,\
+                                                                                         "pull_request": {\
+                                                                                           "url": "https://api.github.com/repos/nose-devs/nose/pulls/865",\
+                                                                                           "html_url": "https://github.com/nose-devs/nose/pull/865",\
+                                                                                           "diff_url": "https://github.com/nose-devs/nose/pull/865.diff",\
+                                                                                           "patch_url": "https://github.com/nose-devs/nose/pull/865.patch"\
+                                                                                         },\
+                                                                                         "body": "Comment Issue 2",\
+                                                                                         "score": 1.0\
+                                                                                       }]}'
+
+bodies["https://api.github.com/search/issues?q=author:little-dude&per_page=100&page=3"] = '{"total_count": 3,\
+                                                                                     "incomplete_results": false,\
+                                                                                     "items": [\
+                                                                                       {\
+                                                                                         "url": "https://api.github.com/repos/nose-devs/nose/issues/865",\
+                                                                                         "labels_url": "https://api.github.com/repos/nose-devs/nose/issues/865/labels{/name}",\
+                                                                                         "comments_url": "https://api.github.com/repos/nose-devs/nose/issues/865/comments",\
+                                                                                         "events_url": "https://api.github.com/repos/nose-devs/nose/issues/865/events",\
+                                                                                         "html_url": "https://github.com/nose-devs/nose/pull/865",\
+                                                                                         "id": 52769662,\
+                                                                                         "number": 865,\
+                                                                                         "title": "Refactor loadTestsFromName in smaller bites.",\
+                                                                                         "user": {\
+                                                                                           "login": "little-dude",\
+                                                                                           "id": 6646324,\
+                                                                                           "avatar_url": "https://avatars.githubusercontent.com/u/6646324?v=3",\
+                                                                                           "gravatar_id": "",\
+                                                                                           "url": "https://api.github.com/users/little-dude",\
+                                                                                           "html_url": "https://github.com/little-dude",\
+                                                                                           "followers_url": "https://api.github.com/users/little-dude/followers",\
+                                                                                           "following_url": "https://api.github.com/users/little-dude/following{/other_user}",\
+                                                                                           "gists_url": "https://api.github.com/users/little-dude/gists{/gist_id}",\
+                                                                                           "starred_url": "https://api.github.com/users/little-dude/starred{/owner}{/repo}",\
+                                                                                           "subscriptions_url": "https://api.github.com/users/little-dude/subscriptions",\
+                                                                                           "organizations_url": "https://api.github.com/users/little-dude/orgs",\
+                                                                                           "repos_url": "https://api.github.com/users/little-dude/repos",\
+                                                                                           "events_url": "https://api.github.com/users/little-dude/events{/privacy}",\
+                                                                                           "received_events_url": "https://api.github.com/users/little-dude/received_events",\
+                                                                                           "type": "User",\
+                                                                                           "site_admin": false\
+                                                                                         },\
+                                                                                         "labels": [],\
+                                                                                         "state": "open",\
+                                                                                         "locked": false,\
+                                                                                         "assignee": null,\
+                                                                                         "milestone": null,\
+                                                                                         "comments": 3,\
+                                                                                         "created_at": "2011-12-23T19:52:01Z",\
+                                                                                         "updated_at": "2011-12-28T22:39:54Z",\
+                                                                                         "closed_at": null,\
+                                                                                         "pull_request": {\
+                                                                                           "url": "https://api.github.com/repos/nose-devs/nose/pulls/865",\
+                                                                                           "html_url": "https://github.com/nose-devs/nose/pull/865",\
+                                                                                           "diff_url": "https://github.com/nose-devs/nose/pull/865.diff",\
+                                                                                           "patch_url": "https://github.com/nose-devs/nose/pull/865.patch"\
+                                                                                         },\
+                                                                                         "body": "Comment Issue 2",\
+                                                                                         "score": 1.0\
+                                                                                       }]}'

@@ -11,11 +11,12 @@ from gitstats.models.commit import Commit
 from gitstats.models.issue import Issue
 from gitstats.models.user import User
 from gitstats.lib.routes import make_uri_user, make_uri_search_issue, make_uri_orgs
+from gitstats.lib.utils import date_utc_to_user_time_zone
 
 class Account(object):
 
-    def __init__(self, username):
-        self.user = User(username)
+    def __init__(self, username, timezone):
+        self.user = User(username, timezone)
         self.repositories = list()
         self.forks = list()
         self.orgs = list()
@@ -102,7 +103,7 @@ class Account(object):
 
         number_days = (self.end_date - self.start_date).days
 
-        contributions_list = [list()] * (number_days + 1)
+        contributions_list = [list()] * (number_days)
         commits = list()
         issues = list()
 
@@ -123,6 +124,8 @@ class Account(object):
             contributions.extend(contributions_list[day_number])
             contributions_list[day_number] = contributions
             self.total_contributions += 1
+
+        #print issues
 
         for issue in issues:
             day_number = (self.end_date - issue.date).days
@@ -200,6 +203,8 @@ class Account(object):
 
         for new_commit in new_commits:
             date = datetime.datetime.strptime(new_commit["commit"]["author"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+            date = date_utc_to_user_time_zone(date, self.user.timezone)
+
             commit = Commit(date=date, sha=new_commit["sha"], author=new_commit["commit"]["author"]["name"], message=new_commit["commit"]["message"])
             commits.append(commit)
 
@@ -234,9 +239,10 @@ class Account(object):
 
         for dict_issue in dict_issues:
             date = datetime.datetime.strptime(dict_issue["created_at"], "%Y-%m-%dT%H:%M:%SZ")
-            issue = Issue(date=date, author=dict_issue["user"]["login"], number=dict_issue["number"], title=dict_issue["title"])
+            date = date_utc_to_user_time_zone(date, self.user.timezone)
 
-            if date > start_date:
+            if date > start_date and date < end_date:
+                issue = Issue(date=date, author=dict_issue["user"]["login"], number=dict_issue["number"], title=dict_issue["title"])
                 issues.append(issue)
 
         fetcher.extend(issues)

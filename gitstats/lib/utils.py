@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import os
 import re
 import datetime
 
 from base64 import urlsafe_b64encode
 
-token = os.environ["GITSTATS_TOKEN"]
+oath_token = None
 
 def make_headers():
     """ Return a dictionary with the needed headers for github
@@ -14,7 +13,7 @@ def make_headers():
     """
 
     headers = dict()
-    headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("%s:x-oauth-basic" % token))
+    headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("%s:x-oauth-basic" % oath_token))
     #headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("login:password"))
     headers["Content-Type"] = "application/json"
     headers["Accept"] = "application/json"

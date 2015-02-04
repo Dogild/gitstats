@@ -12,12 +12,12 @@ from gitstats.models.commit import Commit
 from gitstats.models.issue import Issue
 from gitstats.models.user import User
 from gitstats.lib.routes import make_uri_user, make_uri_search_issue, make_uri_orgs
-from gitstats.lib.utils import date_utc_to_user_time_zone, set_token
+from gitstats.lib.utils import date_utc_to_user_time_zone
 
 class Account(object):
 
     def __init__(self, username, timezone, token=None):
-        self.user = User(username, timezone)
+        self.user = User(username, timezone, token=token)
         self.repositories = list()
         self.forks = list()
         self.orgs = list()
@@ -26,7 +26,6 @@ class Account(object):
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=364)
 
-        set_token(token)
 
     def get_contributions_of_last_year(self):
         """ Return the contributions of the last year, return an array of 365 arrays """
@@ -82,7 +81,7 @@ class Account(object):
     def _get_users(self, uri, params=dict()):
         """ Get the repos of the users """
 
-        dict_user = GithubConnection(self.user.name).get(uri, params)
+        dict_user = GithubConnection(self.user.name, self.user.token).get(uri, params)
 
         if "repos_url" in dict_user:
             self.user.repos_url = dict_user["repos_url"]
@@ -92,7 +91,7 @@ class Account(object):
     def _get_orgs(self, uri, params=dict(), fetcher=list()):
         """ Get the organizations repos of the users """
 
-        orgs = GithubConnection(self.user.name).get(uri, params)
+        orgs = GithubConnection(self.user.name, self.user.token).get(uri, params)
         fetcher.extend(orgs)
 
         return orgs
@@ -142,7 +141,7 @@ class Account(object):
     def _get_repositories(self, uri, params=dict(), fetcher=list()):
         """ Fetch repositories with the given URI """
 
-        repositories = GithubConnection(self.user.name).get(uri, params)
+        repositories = GithubConnection(self.user.name, self.user.token).get(uri, params)
         fetcher.extend(repositories)
 
         return repositories
@@ -150,7 +149,7 @@ class Account(object):
     def _get_repository(self, uri, params=dict(), destinations=dict()):
         """ Fetch a specific repository with the given URI, this is used when having a fork repository """
 
-        repository = GithubConnection(self.user.name).get(uri, params)
+        repository = GithubConnection(self.user.name, self.user.token).get(uri, params)
 
         destinations["commits_url"] = repository["parent"]["commits_url"]
         destinations["url"] = repository["parent"]["url"]
@@ -202,7 +201,7 @@ class Account(object):
 
         commits = list()
 
-        new_commits = GithubConnection(self.user.name).get(uri, params)
+        new_commits = GithubConnection(self.user.name, self.user.token).get(uri, params)
 
         for new_commit in new_commits:
             date = datetime.datetime.strptime(new_commit["commit"]["author"]["date"], "%Y-%m-%dT%H:%M:%SZ")
@@ -238,7 +237,7 @@ class Account(object):
 
         issues = list()
 
-        dict_issues = GithubConnection(self.user.name).search_issues(uri=make_uri_search_issue(), params=params, min_date=start_date)
+        dict_issues = GithubConnection(self.user.name, self.user.token).search_issues(uri=make_uri_search_issue(), params=params, min_date=start_date)
 
         for dict_issue in dict_issues:
             date = datetime.datetime.strptime(dict_issue["created_at"], "%Y-%m-%dT%H:%M:%SZ")

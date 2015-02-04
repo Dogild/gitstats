@@ -1,16 +1,54 @@
 # -*- coding: utf-8 -*-
 
-import json
-import requests
-import datetime
 
-from gitstats.lib.utils import make_headers, transform_url
-from gitstats.models.repository import Repository
+import datetime
+import os
+import re
+import requests
+
+from base64 import urlsafe_b64encode
+
+from gitstats.lib.exceptions import TokenException
+
 
 class GithubConnection(object):
 
-    def __init__(self, username):
+    def __init__(self, username, token=None):
         self.username = username
+        self.token = token
+
+    def _get_headers(self):
+        """ Get headers for the given connection
+
+        """
+        oauth_token = self.token
+        if oauth_token is None:
+            if  "GITSTATS_TOKEN" not in os.environ:
+                oauth_token = os.environ["GITSTATS_TOKEN"]
+            else:
+                raise TokenException("Unknown token")
+
+        headers = dict()
+
+        headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("%s:x-oauth-basic" % oauth_token))
+        headers["Content-Type"] = "application/json"
+        headers["Accept"] = "application/json"
+
+        return headers
+
+    def _transform_url(self, url):
+        """ This method will return the URL after having removed the extra informations of the URL got by github.
+            For instance, /commits/{sha} the string {sha} will be removed
+        """
+
+        m = re.search('([\w\:\/\.\-]*)', url)
+        uri = m.group(0)
+
+        if uri[-1:] == "/":
+            uri = uri[:-1]
+
+        return uri
+
 
     def _invoke_request(self, uri):
         """ Launch a request with requests
@@ -18,7 +56,7 @@ class GithubConnection(object):
         """
 
         try:
-            r = requests.get(uri, headers=make_headers())
+            r = requests.get(uri, headers=self._get_headers())
         except Exception as exc:
             raise Exception("Requests issue %s" % exc)
 
@@ -30,7 +68,7 @@ class GithubConnection(object):
     def _add_params(self, uri, params):
         """ Add the given params to the given URI """
 
-        uri = "%s?" % transform_url(uri)
+        uri = "%s?" % self._transform_url(uri)
         uri_params = ""
 
         params["per_page"] = 100

@@ -192,4 +192,16 @@ class AccountTests(TestCase):
         self.assertEqual(str(issues[0]).replace('\n', ''), "Issue 2015-01-02 10:14:05 : little-dude logs printed twice")
         self.assertEqual(str(issues[1]).replace('\n', ''), "Issue 2014-12-23 10:52:01 : little-dude Refactor loadTestsFromName in smaller bites.")
 
+    @responses.activate
+    def test_method_search_issues_without_issue(self):
+        """Test the method search_issues"""
+        account = Account("Dogild", timezone=32400)
+        account.end_date = datetime(2015, 2, 3, 0, 0, 0, 1)
+        account.start_date = datetime(2014, 2, 4, 0, 0, 0, 1)
+
+        issues = list()
+        account.get_issues(account.start_date, account.end_date, fetcher=issues)
+
+        self.assertEqual(len(issues), 0)
+
 

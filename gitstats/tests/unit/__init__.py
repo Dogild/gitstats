@@ -495,3 +495,5 @@ bodies["https://api.github.com/search/issues?q=author:little-dude&per_page=100&p
                                                                                          "body": "Comment Issue 2",\
                                                                                          "score": 1.0\
                                                                                        }]}'
+
+bodies["https://api.github.com/search/issues?q=author:Dogild&per_page=100"] = []

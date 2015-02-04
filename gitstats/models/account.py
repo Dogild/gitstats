@@ -2,7 +2,6 @@
 
 import datetime
 import calendar
-import os
 
 from datetime import timedelta, time
 
@@ -13,7 +12,7 @@ from gitstats.models.commit import Commit
 from gitstats.models.issue import Issue
 from gitstats.models.user import User
 from gitstats.lib.routes import make_uri_user, make_uri_search_issue, make_uri_orgs
-from gitstats.lib.utils import date_utc_to_user_time_zone, oath_token
+from gitstats.lib.utils import date_utc_to_user_time_zone, set_token
 
 class Account(object):
 
@@ -27,12 +26,7 @@ class Account(object):
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=364)
 
-        if token:
-            oath_token = token
-        elif "GITSTATS_TOKEN" in os.environ:
-            oath_token = os.environ["GITSTATS_TOKEN"]
-        else:
-            raise TokenException("Token exception")
+        set_token(token)
 
     def get_contributions_of_last_year(self):
         """ Return the contributions of the last year, return an array of 365 arrays """
@@ -266,8 +260,3 @@ class AccountNameException(Exception):
 
     def __str__(self):
         return repr(self.value)
-
-class TokenException(Exception):
-
-    def __str__(self):
-        return "Token not defined. Please defined in the the environment var GITSTATS_TOKEN or give it to the constructor of account"

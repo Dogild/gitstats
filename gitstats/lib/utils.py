@@ -2,10 +2,20 @@
 
 import re
 import datetime
+import os
 
 from base64 import urlsafe_b64encode
 
-oath_token = None
+oauth_token = None
+
+def set_token(token):
+
+    if token:
+        oauth_token = token
+    elif "GITSTATS_TOKEN" in os.environ:
+        oauth_token = os.environ["GITSTATS_TOKEN"]
+    else:
+        raise TokenException("Token exception")
 
 def make_headers():
     """ Return a dictionary with the needed headers for github
@@ -13,7 +23,7 @@ def make_headers():
     """
 
     headers = dict()
-    headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("%s:x-oauth-basic" % oath_token))
+    headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("%s:x-oauth-basic" % oauth_token))
     #headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("login:password"))
     headers["Content-Type"] = "application/json"
     headers["Accept"] = "application/json"
@@ -35,3 +45,8 @@ def transform_url(url):
 
 def date_utc_to_user_time_zone(date, timezone):
     return date - datetime.timedelta(seconds=timezone)
+
+class TokenException(Exception):
+
+    def __str__(self):
+        return "Token not defined. Please defined in the the environment var GITSTATS_TOKEN or give it to the constructor of account"

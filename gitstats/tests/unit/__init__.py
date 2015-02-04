@@ -239,3 +239,127 @@ bodies["https://api.github.com/orgs/cappuccino/repos?per_page=100"] = '[{"id": 4
                                                                         }]'
 
 bodies["https://api.github.com/orgs/little-dude/repos?per_page=100"] = '[]'
+
+bodies["https://api.github.com/repos/cappuccino/ojtest/commits?per_page=100&since=2014-02-04T00:00:00.000001&until=2015-02-03T00:00:00.000001&author=little-dude"] = '[{"sha":"7ac6fd56dd614b1c124a594251dc694cb3930d9b",\
+                                                                                                                                                                      "commit":{"author":{"name":"Alexandre Wilhelm",\
+                                                                                                                                                                                          "email":"contact.dogild@gmail.com",\
+                                                                                                                                                                                          "date":"2014-08-04T23:47:35Z"},\
+                                                                                                                                                                                          "committer":{"name":"Alexandre Wilhelm",\
+                                                                                                                                                                                          "email":"contact.dogild@gmail.com",\
+                                                                                                                                                                                          "date":"2014-08-04T23:47:35Z"},\
+                                                                                                                                                                                          "message":"Fixed: removed double methods...",\
+                                                                                                                                                                                          "tree":{"sha":"e9e54d974b0411fa2c55199aba2fdd1dcd176781",\
+                                                                                                                                                                                                  "url":"https://api.github.com/repos/cappuccino/OJTest/git/trees/e9e54d974b0411fa2c55199aba2fdd1dcd176781"},\
+                                                                                                                                                                                          "url":"https://api.github.com/repos/cappuccino/OJTest/git/commits/7ac6fd56dd614b1c124a594251dc694cb3930d9b",\
+                                                                                                                                                                                          "comment_count":0},\
+                                                                                                                                                                        "url":"https://api.github.com/repos/cappuccino/OJTest/commits/7ac6fd56dd614b1c124a594251dc694cb3930d9b",\
+                                                                                                                                                                        "html_url":"https://github.com/cappuccino/OJTest/commit/7ac6fd56dd614b1c124a594251dc694cb3930d9b",\
+                                                                                                                                                                        "comments_url":"https://api.github.com/repos/cappuccino/OJTest/commits/7ac6fd56dd614b1c124a594251dc694cb3930d9b/comments",\
+                                                                                                                                                                        "author":{"login":"Dogild","id":2860781,"avatar_url":"https://avatars.githubusercontent.com/u/2860781?v=3",\
+                                                                                                                                                                        "gravatar_id":"","url":"https://api.github.com/users/Dogild",\
+                                                                                                                                                                        "html_url":"https://github.com/Dogild",\
+                                                                                                                                                                        "followers_url":"https://api.github.com/users/Dogild/followers",\
+                                                                                                                                                                        "following_url":"https://api.github.com/users/Dogild/following{/other_user}",\
+                                                                                                                                                                        "gists_url":"https://api.github.com/users/Dogild/gists{/gist_id}",\
+                                                                                                                                                                        "starred_url":"https://api.github.com/users/Dogild/starred{/owner}{/repo}",\
+                                                                                                                                                                        "subscriptions_url":"https://api.github.com/users/Dogild/subscriptions",\
+                                                                                                                                                                        "organizations_url":"https://api.github.com/users/Dogild/orgs",\
+                                                                                                                                                                        "repos_url":"https://api.github.com/users/Dogild/repos",\
+                                                                                                                                                                        "events_url":"https://api.github.com/users/Dogild/events{/privacy}",\
+                                                                                                                                                                        "received_events_url":"https://api.github.com/users/Dogild/received_events",\
+                                                                                                                                                                        "type":"User","site_admin":false},\
+                                                                                                                                                                        "committer":{"login":"Dogild",\
+                                                                                                                                                                                     "id":2860781,\
+                                                                                                                                                                                     "avatar_url":"https://avatars.githubusercontent.com/u/2860781?v=3",\
+                                                                                                                                                                                     "gravatar_id":"","url":"https://api.github.com/users/Dogild",\
+                                                                                                                                                                                     "html_url":"https://github.com/Dogild",\
+                                                                                                                                                                                     "followers_url":"https://api.github.com/users/Dogild/followers",\
+                                                                                                                                                                                     "following_url":"https://api.github.com/users/Dogild/following{/other_user}",\
+                                                                                                                                                                                     "gists_url":"https://api.github.com/users/Dogild/gists{/gist_id}",\
+                                                                                                                                                                                     "starred_url":"https://api.github.com/users/Dogild/starred{/owner}{/repo}",\
+                                                                                                                                                                                     "subscriptions_url":"https://api.github.com/users/Dogild/subscriptions",\
+                                                                                                                                                                                     "organizations_url":"https://api.github.com/users/Dogild/orgs",\
+                                                                                                                                                                                     "repos_url":"https://api.github.com/users/Dogild/repos",\
+                                                                                                                                                                                     "events_url":"https://api.github.com/users/Dogild/events{/privacy}",\
+                                                                                                                                                                                     "received_events_url":"https://api.github.com/users/Dogild/received_events",\
+                                                                                                                                                                                     "type":"User","site_admin":false},"parents":[{"sha":"410d9ceaefe4fefac6b7b5726f6c260c4e90121b",\
+                                                                                                                                                                                                                                   "url":"https://api.github.com/repos/cappuccino/OJTest/commits/410d9ceaefe4fefac6b7b5726f6c260c4e90121b",\
+                                                                                                                                                                                                                                   "html_url":"https://github.com/cappuccino/OJTest/commit/410d9ceaefe4fefac6b7b5726f6c260c4e90121b"}]},\
+                                                                                                                                                                    {"sha":"410d9ceaefe4fefac6b7b5726f6c260c4e90121b",\
+                                                                                                                                                                    "commit":{"author":{"name":"Alexandre Wilhelm",\
+                                                                                                                                                                                        "email":"contact.dogild@gmail.com",\
+                                                                                                                                                                                        "date":"2014-08-04T23:44:20Z"},\
+                                                                                                                                                                                        "committer":{"name":"Alexandre Wilhelm",\
+                                                                                                                                                                                                     "email":"contact.dogild@gmail.com",\
+                                                                                                                                                                                                     "date":"2014-08-04T23:44:20Z"},\
+                                                                                                                                                                                                     "message":"New: Added the number of tests launched\\n\\nPreviously, when a suite of tests ended, we didn\'t know how many tests were launched.\\nNow we know. The formats of the message can be :\\n\\n-   All tests passed in the test suite.\\n    Total tests: 176\\n\\n-   Test suite failed with 0 errors and 1 failures and 175 successes\\n    Total tests : 176",\
+                                                                                                                                                                                                     "tree":{"sha":"d58a281a3ee9b990fcdb6258f20aba5ddf138aaf",\
+                                                                                                                                                                                                             "url":"https://api.github.com/repos/cappuccino/OJTest/git/trees/d58a281a3ee9b990fcdb6258f20aba5ddf138aaf"},\
+                                                                                                                                                                                                     "url":"https://api.github.com/repos/cappuccino/OJTest/git/commits/410d9ceaefe4fefac6b7b5726f6c260c4e90121b",\
+                                                                                                                                                                                                     "comment_count":0},\
+                                                                                                                                                                                        "url":"https://api.github.com/repos/cappuccino/OJTest/commits/410d9ceaefe4fefac6b7b5726f6c260c4e90121b",\
+                                                                                                                                                                                        "html_url":"https://github.com/cappuccino/OJTest/commit/410d9ceaefe4fefac6b7b5726f6c260c4e90121b",\
+                                                                                                                                                                                        "comments_url":"https://api.github.com/repos/cappuccino/OJTest/commits/410d9ceaefe4fefac6b7b5726f6c260c4e90121b/comments",\
+                                                                                                                                                                                        "author":{"login":"Dogild",\
+                                                                                                                                                                                                  "id":2860781,\
+                                                                                                                                                                                                  "avatar_url":"https://avatars.githubusercontent.com/u/2860781?v=3",\
+                                                                                                                                                                                                  "gravatar_id":"","url":"https://api.github.com/users/Dogild",\
+                                                                                                                                                                                                  "html_url":"https://github.com/Dogild",\
+                                                                                                                                                                                                  "followers_url":"https://api.github.com/users/Dogild/followers",\
+                                                                                                                                                                                                  "following_url":"https://api.github.com/users/Dogild/following{/other_user}",\
+                                                                                                                                                                                                  "gists_url":"https://api.github.com/users/Dogild/gists{/gist_id}",\
+                                                                                                                                                                                                  "starred_url":"https://api.github.com/users/Dogild/starred{/owner}{/repo}",\
+                                                                                                                                                                                                  "subscriptions_url":"https://api.github.com/users/Dogild/subscriptions",\
+                                                                                                                                                                                                  "organizations_url":"https://api.github.com/users/Dogild/orgs",\
+                                                                                                                                                                                                  "repos_url":"https://api.github.com/users/Dogild/repos",\
+                                                                                                                                                                                                  "events_url":"https://api.github.com/users/Dogild/events{/privacy}",\
+                                                                                                                                                                                                  "received_events_url":"https://api.github.com/users/Dogild/received_events",\
+                                                                                                                                                                                                  "type":"User","site_admin":false},\
+                                                                                                                                                                                        "committer":{"login":"Dogild",\
+                                                                                                                                                                                                     "id":2860781,\
+                                                                                                                                                                                                     "avatar_url":"https://avatars.githubusercontent.com/u/2860781?v=3",\
+                                                                                                                                                                                                     "gravatar_id":"","url":"https://api.github.com/users/Dogild",\
+                                                                                                                                                                                                     "html_url":"https://github.com/Dogild",\
+                                                                                                                                                                                                     "followers_url":"https://api.github.com/users/Dogild/followers",\
+                                                                                                                                                                                                     "following_url":"https://api.github.com/users/Dogild/following{/other_user}",\
+                                                                                                                                                                                                     "gists_url":"https://api.github.com/users/Dogild/gists{/gist_id}",\
+                                                                                                                                                                                                     "starred_url":"https://api.github.com/users/Dogild/starred{/owner}{/repo}",\
+                                                                                                                                                                                                     "subscriptions_url":"https://api.github.com/users/Dogild/subscriptions",\
+                                                                                                                                                                                                     "organizations_url":"https://api.github.com/users/Dogild/orgs",\
+                                                                                                                                                                                                     "repos_url":"https://api.github.com/users/Dogild/repos",\
+                                                                                                                                                                                                     "events_url":"https://api.github.com/users/Dogild/events{/privacy}",\
+                                                                                                                                                                                                     "received_events_url":"https://api.github.com/users/Dogild/received_events",\
+                                                                                                                                                                                                     "type":"User","site_admin":false},\
+                                                                                                                                                                                        "parents":[{"sha":"c289fa7bee69a8cef7adeafbeede25d90cf2e51e",\
+                                                                                                                                                                                                    "url":"https://api.github.com/repos/cappuccino/OJTest/commits/c289fa7bee69a8cef7adeafbeede25d90cf2e51e",\
+                                                                                                                                                                                                    "html_url":"https://github.com/cappuccino/OJTest/commit/c289fa7bee69a8cef7adeafbeede25d90cf2e51e"}]}]'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

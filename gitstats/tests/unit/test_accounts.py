@@ -53,6 +53,12 @@ class AccountTests(TestCase):
                           match_querystring=True,
                           content_type='application/json')
 
+        responses.add(responses.GET, 'https://api.github.com/repos/cappuccino/ojunit/commits?per_page=100&since=2014-02-04T00:00:00.000001&until=2015-02-03T00:00:00.000001&author=little-dude',
+                          body=bodies["https://api.github.com/repos/cappuccino/ojunit/commits?per_page=100&since=2014-02-04T00:00:00.000001&until=2015-02-03T00:00:00.000001&author=little-dude"],
+                          status=200,
+                          match_querystring=True,
+                          content_type='application/json')
+
     def tearDown(self):
         pass
 
@@ -143,6 +149,17 @@ class AccountTests(TestCase):
         commit = commits[1]
         self.assertEqual(str(commit).replace('\n', ''), "Commit : 2014-08-04 14:44:20 Alexandre Wilhelm New: Added the number of tests launchedPreviously, when a suite of tests ended, we didn't know how many tests were launched.Now we know. The formats of the message can be :-   All tests passed in the test suite.    Total tests: 176-   Test suite failed with 0 errors and 1 failures and 175 successes    Total tests : 176")
 
+    @responses.activate
+    def test_method_get_commits_for_repository_without_commit(self):
+        """Test the method _get_commits_for_repository"""
+        account = Account("little-dude", timezone=32400)
+        account.end_date = datetime(2015, 2, 3, 0, 0, 0, 1)
+        account.start_date = datetime(2014, 2, 4, 0, 0, 0, 1)
+
+        commits = list()
+        account._get_commits_for_repository(uri="https://api.github.com/repos/cappuccino/ojunit/commits", fetcher=commits)
+
+        self.assertEqual(len(commits), 0)
 
 
 

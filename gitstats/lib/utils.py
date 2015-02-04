@@ -2,6 +2,7 @@
 
 import os
 import re
+import datetime
 
 from base64 import urlsafe_b64encode
 
@@ -32,3 +33,6 @@ def transform_url(url):
         uri = uri[:-1]
 
     return uri
+
+def date_utc_to_user_time_zone(date, timezone):
+    return date - datetime.timedelta(seconds=timezone)

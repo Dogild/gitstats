@@ -10,7 +10,6 @@ from base64 import urlsafe_b64encode
 
 from gitstats.lib.exceptions import TokenException
 
-
 class GithubConnection(object):
 
     def __init__(self, username, token=None):
@@ -19,17 +18,16 @@ class GithubConnection(object):
 
     def _get_headers(self):
         """ Get headers for the given connection
-
         """
+
         oauth_token = self.token
         if oauth_token is None:
-            if  "GITSTATS_TOKEN" not in os.environ:
+            if  "GITSTATS_TOKEN" in os.environ:
                 oauth_token = os.environ["GITSTATS_TOKEN"]
             else:
                 raise TokenException("Unknown token")
 
         headers = dict()
-
         headers["Authorization"] = "Basic %s" % (urlsafe_b64encode("%s:x-oauth-basic" % oauth_token))
         headers["Content-Type"] = "application/json"
         headers["Accept"] = "application/json"

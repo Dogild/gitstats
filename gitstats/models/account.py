@@ -13,6 +13,7 @@ from gitstats.models.issue import Issue
 from gitstats.models.user import User
 from gitstats.lib.routes import make_uri_user, make_uri_search_issue, make_uri_orgs
 from gitstats.lib.utils import date_utc_to_user_time_zone
+from gitstats.lib.exceptions import AccountNameException
 
 class Account(object):
 
@@ -25,7 +26,6 @@ class Account(object):
         self.total_contributions = 0
         self.end_date = datetime.datetime.today()
         self.start_date = self.end_date - datetime.timedelta(days=364)
-
 
     def get_contributions_of_last_year(self):
         """ Return the contributions of the last year, return an array of 365 arrays """
@@ -250,12 +250,3 @@ class Account(object):
         fetcher.extend(issues)
 
         return issues
-
-
-class AccountNameException(Exception):
-
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)

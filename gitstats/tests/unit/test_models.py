@@ -24,10 +24,11 @@ class ModelTests(TestCase):
     def test_creation_account(self):
         """Test the creation of an account"""
 
-        account = Account("Dogild", timezone=32400)
+        account = Account("Dogild", timezone=32400, token="abc")
 
         self.assertEqual(account.user.name, "Dogild")
         self.assertEqual(account.user.timezone, 32400)
+        self.assertEqual(account.user.token, "abc")
         self.assertEqual(account.repositories, list())
         self.assertEqual(account.forks, list())
         self.assertEqual(account.orgs, list())
@@ -72,7 +73,9 @@ class ModelTests(TestCase):
     def test_creation_user(self):
         """Test the creation of an user"""
 
-        user = User(name="Dogild", timezone=32400, repos_url="http://github.com/Dogild")
+        user = User(name="Dogild", timezone=32400, repos_url="http://github.com/Dogild", token="abc")
 
         self.assertEqual(user.name, "Dogild")
+        self.assertEqual(user.timezone, 32400)
+        self.assertEqual(user.token, "abc")
         self.assertEqual(user.repos_url, "http://github.com/Dogild")

@@ -13,6 +13,55 @@ class GithubConnectionTests(TestCase):
     def tearDown(self):
         pass
 
+    def test_method_transform_utils_with_simple_url(self):
+        """Test the method transform_url with a simple url as https://api.github.com"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("https://api.github.com")
+        self.assertEqual(url, "https://api.github.com")
+
+    def test_method_transform_utils_with_simple_url_ending_with_slash(self):
+        """Test the method transform_url with a simple url as https://api.github.com/"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("https://api.github.com/")
+        self.assertEqual(url, "https://api.github.com")
+
+    def test_method_transform_utils_with_api_url(self):
+        """Test the method transform_url with a simple url as https://api.github.com/users/213/repositories"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("https://api.github.com/users/213/repositories")
+        self.assertEqual(url, "https://api.github.com/users/213/repositories")
+
+    def test_method_transform_utils_with_sha_url(self):
+        """Test the method transform_url with a simple url as https://api.github.com/users/213/repositories/{123124214}"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("https://api.github.com/users/213/repositories/{123124214}")
+        self.assertEqual(url, "https://api.github.com/users/213/repositories")
+
+    def test_method_transform_utils_with_api_url_ending_with_slash(self):
+        """Test the method transform_url with a simple url as https://api.github.com/users/213/repositories/"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("https://api.github.com/users/213/repositories/")
+        self.assertEqual(url, "https://api.github.com/users/213/repositories")
+
+    def test_method_transform_utils_with_sha_ur_ending_with_slash(self):
+        """Test the method transform_url with a simple url as https://api.github.com/users/213/repositories/{123124214}/"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("https://api.github.com/users/213/repositories/{123124214}/")
+        self.assertEqual(url, "https://api.github.com/users/213/repositories")
+
+    def test_method_transform_utils_with_empty_url(self):
+        """Test the method transform_url with a empty string"""
+
+        github_connection = GithubConnection("Dogild")
+        url = github_connection._transform_url("")
+        self.assertEqual(url, "")
+
     def test_method_add_params_with_no_param(self):
         """Test the method _add_params with no param, the method adds by default the param per_page=100"""
 

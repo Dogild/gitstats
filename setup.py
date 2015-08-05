@@ -4,7 +4,7 @@ from distutils.core import setup
 from os.path import join
 
 setup(name='gitstats',
-      version='0.0.1',
+      version='0.0.2',
       description='Python library to retrieve public contributions from github',
       author='Alexandre Wilhelm',
       author_email='contact.dogild@gmail.com',

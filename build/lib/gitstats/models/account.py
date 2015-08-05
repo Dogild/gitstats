@@ -110,7 +110,7 @@ class Account(object):
         issues = list()
 
         task_manager_issues = TaskManager()
-        task_manager_issues.launch_request(self.get_issues, params=[self.start_date + datetime.timedelta(days=1), self.end_date, issues])
+        task_manager_issues.launch_request(self.get_issues, params=[self.start_date, self.end_date, issues])
 
         self.sync_user_account()
         self.repositories = self.fetch_repositories()

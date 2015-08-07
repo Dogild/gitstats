@@ -122,15 +122,21 @@ class Account(object):
 
         for commit in commits:
             day_number = (self.end_date - commit.date).days
+
+            if day_number >= number_days:
+                continue
+
             contributions = [commit]
             contributions.extend(contributions_list[day_number])
             contributions_list[day_number] = contributions
             self.total_contributions += 1
 
-        #print issues
-
         for issue in issues:
             day_number = (self.end_date - issue.date).days
+
+            if day_number >= number_days:
+                continue
+
             contributions = [issue]
             contributions.extend(contributions_list[day_number])
             contributions_list[day_number] = contributions

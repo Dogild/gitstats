@@ -3,7 +3,6 @@ Gitstats
 
 Introduction
 ------------
-
 This library can be used to retrieve public activities of the last year of a github account. The datas retrieved per account are the number of contributions and number of commits/issues per days. Statistics only used public activity of the account.
 
 Installation
